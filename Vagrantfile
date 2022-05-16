@@ -4,6 +4,19 @@
 NETWORK_PREFIX = "192.168.150"
 
 Vagrant.configure("2") do |config|
+    # Base VM OS configuration.
+  config.vm.box_check_update = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+  # Do not automatically update the guest ddtitions
+  config.vbguest.auto_update = false if Vagrant.has_plugin?("vagrant-vbguest")
+
+  # General VirtualBox VM configuration.
+  config.vm.provider :virtualbox do |v|
+    v.memory = 512
+    v.cpus = 1
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
 
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "bento/debian-11"
