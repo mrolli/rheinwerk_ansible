@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
     ansible.vm.box = "bento/debian-11"
     ansible.vm.hostname = "ansible"
     ansible.vm.network :private_network, ip: "#{NETWORK_PREFIX}.100"
+    ansible.vm.synced_folder 'ansible/', '/ansible'
   end
 
   config.vm.define "debian" do |debian|
