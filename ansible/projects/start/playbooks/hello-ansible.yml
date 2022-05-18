@@ -1,5 +1,17 @@
 ---
-- hosts: localhost
+- hosts: all
 
   tasks:
-    - debug: msg="Hallo Ansible!"
+    - name: Output string
+      debug: msg="Hallo Ansible!"
+
+    # - name: Suche nach "bedian" in der Datei /etc/os/release
+    #   command: grep -i debian /etc/os-release
+    #   changed_when: false
+
+    - name: "Sag mal: Wie geht das mit dem Doppelpunkt?"
+      debug: 'msg="Soget es: Hurra!"'
+
+    - name: "Sag mal: Wie geht das mit dem Doppelpunkt?"
+      debug:
+        msg: "Soget es: Hurra!"
