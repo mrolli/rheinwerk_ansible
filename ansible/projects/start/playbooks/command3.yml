@@ -1,6 +1,6 @@
 ---
-- hosts: debian
-  gather_facts: false
+- hosts: all
+  gather_facts: true
 
   tasks:
     - name: Platzbedarf der Root-Partition ermitteln
@@ -8,10 +8,14 @@
       changed_when: false
       register: df_cmd
 
-    - debug:
+    - ansible.builtin.debug:
         msg: "{{ df_cmd.stdout_lines }}"
 
-    - debug: var=df_cmd
+    - ansible.builtin.debug: var=df_cmd
 
-    - debug:
+    - ansible.builtin.debug:
         msg: "Command run: {{ df_cmd.cmd | join(' ') }}"
+
+
+    - ansible.builtin.debug:
+        msg: "Dist family: {{ ansible_facts.distribution_file_variety }}"
