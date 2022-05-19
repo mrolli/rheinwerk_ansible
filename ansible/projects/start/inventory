@@ -4,6 +4,17 @@ rocky
 suse
 ubuntu
 
+[rhel]
+rocky
+
+[deb]
+debian
+ubuntu
+
+[misc]
+suse
+
+
 [test_hosts:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
