@@ -1,0 +1,17 @@
+---
+- hosts: debian
+  gather_facts: false
+
+  tasks:
+    - name: Platzbedarf der Root-Partition ermitteln
+      command: df -h /
+      changed_when: false
+      register: df_cmd
+
+    - debug:
+        msg: "{{ df_cmd.stdout_lines }}"
+
+    - debug: var=df_cmd
+
+    - debug:
+        msg: "Command run: {{ df_cmd.cmd | join(' ') }}"
