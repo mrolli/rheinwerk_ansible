@@ -1,0 +1,13 @@
+---
+- hosts: debian
+  gather_facts: false
+
+  tasks:
+    - ansible.builtin.assert:
+        that:
+          - hostname is defined and hostname != ''
+        fail_msg: Die Variable hostname ist nicht vorhanden oder leer
+
+    - name: Hostename setzen
+      ansible.builtin.hostname:
+        name: "{{ hostname }}"
