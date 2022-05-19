@@ -2,6 +2,10 @@
 - hosts: all
   gather_facts: false
 
+  vars_files:
+    - vars/setup.yml
+    - [ vars/additional.yml, vars/common.yml ]
+
   tasks:
     - debug:
-        msg: "Farbe: {{ farbe }}, Zahl: {{ zahl }}"
+        msg: "Farbe: {{ farbe }}, Zahl: {{ zahl }}, Material: {{ material }}, Wind: {{ wind }}"
