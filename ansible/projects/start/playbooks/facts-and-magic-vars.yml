@@ -34,3 +34,14 @@
           {{ hostvars[item].ansible_all_ipv4_addresses }}
       with_items: '{{ groups.all | sort }}'
       run_once: true
+
+    - name: Sende Grüsse von Suse und RHEL-Systemen
+      debug:
+        msg: "Ein Hallo von {{ ansible_distribution }}, einem {{ ansible_os_family}}-Linux System"
+      when: ansible_os_family in ["RedHat", "Suse"]
+
+    - name: Auf neues Ubuntu prüfen
+      debug:
+        msg: Ein ziemlich neues Ubuntu
+      when: ansible_distribution == "Ubuntu" and
+        ansible_distribution_version is version('19.10', '>=')
