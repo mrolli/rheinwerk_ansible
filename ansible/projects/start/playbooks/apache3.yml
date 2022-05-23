@@ -1,0 +1,60 @@
+---
+- hosts: all
+
+  handlers:
+    - name: reload apache
+      service:
+        name: "{{ apache_service_name }}"
+        state: reloaded
+      listen: "restart web services"
+
+  tasks:
+    - name: Systemspezifische Variablen einbinden
+      include_vars: >
+        apache_{{ ansible_distribution | lower | replace(" ", "-") }}.yml
+
+    - name: Paketlisten aktualisieren
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+
+    - name: Apache-Paket installieren
+      ansible.builtin.package:
+        name: "{{ apache_package_name }}"
+        state: present
+
+    - name: Dienst starten und in Bootprozess integrieren
+      ansible.builtin.service:
+        name: "{{ apache_service_name }}"
+        state: started
+        enabled: yes
+
+    - name: Minimale Startseite einrichten
+      ansible.builtin.copy:
+        dest: "{{ apache_document_root }}/index.html"
+        mode: 0644
+        content: |
+          <!doctype html>
+          <html>
+            <head>
+              <meta charset="utf-8" />
+              <title>Willkommen auf unserer Homepage!</title>
+            </head>
+            <body>
+              <h1>Willkommen auf unserer coolen Homepage</h1>
+            </body>
+          </html>
+
+    - name: Plugin-config hochladen
+      ansible.builtin.copy:
+        dest: "{{ apache_config_directory }}/redirect.conf"
+        content: |
+          Redirect /go http://docs.ansible.com/
+      notify: restart web services
+
+    - name: Config aktivieren
+      ansible.builtin.command:
+        cmd: a2enconf redirect
+        creates: /etc/apache2/conf-enabled/redirect.conf
+      when: ansible_os_family == "Debian"

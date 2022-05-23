@@ -1,0 +1,17 @@
+---
+- hosts: all
+
+  tasks:
+    - include_vars: >
+        apache_{{ ansible_distribution | lower | replace(" ", "-") }}.yml
+
+    - name: Apache installieren
+      package:
+        name: "{{ apache_package_name }}"
+        state: present
+
+    - name: Apache aktivieren und starten
+      service:
+        name: "{{ apache_service_name }}"
+        state: started
+        enabled: true

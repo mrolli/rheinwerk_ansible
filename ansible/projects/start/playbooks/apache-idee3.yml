@@ -1,0 +1,29 @@
+---
+- hosts: all
+
+  vars:
+    apache:
+      Debian:
+        package_name: apache2
+        service_name: apache2
+      Ubuntu:
+        package_name: apache2
+        service_name: apache2
+      Rocky:
+        package_name: httpd
+        service_name: httpd
+      openSUSE Leap:
+        package_name: apache2
+        service_name: apache2
+
+  tasks:
+    - name: Apache installieren
+      package:
+        name: "{{ apache[ansible_distribution].package_name }}"
+        state: present
+
+    - name: Apache aktivieren und starten
+      service:
+        name: "{{ apache[ansible_distribution].service_name }}"
+        state: started
+        enabled: true
