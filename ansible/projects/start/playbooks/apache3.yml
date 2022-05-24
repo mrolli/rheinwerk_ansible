@@ -31,20 +31,10 @@
         enabled: yes
 
     - name: Minimale Startseite einrichten
-      ansible.builtin.copy:
+      ansible.builtin.template:
+        src: index.html.j2
         dest: "{{ apache_document_root }}/index.html"
         mode: 0644
-        content: |
-          <!doctype html>
-          <html>
-            <head>
-              <meta charset="utf-8" />
-              <title>Willkommen auf unserer Homepage!</title>
-            </head>
-            <body>
-              <h1>Willkommen auf unserer coolen Homepage</h1>
-            </body>
-          </html>
 
     - name: Plugin-config hochladen
       ansible.builtin.copy:
