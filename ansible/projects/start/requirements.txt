@@ -1,0 +1,2 @@
+# Install dependencies in venv using pip install -r requirements.txt
+dnspython
