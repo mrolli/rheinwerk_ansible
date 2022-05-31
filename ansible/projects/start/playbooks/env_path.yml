@@ -1,0 +1,12 @@
+---
+- hosts: all
+
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/snap/bin"
+
+  tasks:
+    - name: PATH ausgeben
+      command: "echo $PATH"
+      register: pathout
+
+    - debug: msg="{{ pathout.stdout }}"
