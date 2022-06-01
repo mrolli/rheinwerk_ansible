@@ -1,0 +1,51 @@
+---
+- hosts: all
+
+  vars:
+    package_mgr: "dnf"
+    pkg_flags: "-y"
+    python_pkgs:
+      - python3
+
+
+  tasks:
+    - name: Dateien suchen und Ergebnis sichern
+      ansible.builtin.command: find /etc -name *.conf
+      register: find_cmd
+
+    - name: Die ersten drei Ergebnisse ausgeben
+      ansible.builtin.debug: msg="{{ item }}"
+      loop: "{{ find_cmd.stdout_lines[0:3] }}"
+
+    - name: Ergebnis einer Sortierung in /tmp ablegen
+      ansible.builtin.command:
+        chdir: /tmp
+        cmd: sort /etc/passwd -o sorted.txt
+        creates: sorted.txt
+
+
+    - name: Programm mit "a" am Anfang zählen
+      shell: "ls -l /usr/bin/a* | wc -l"
+
+    - name: Brace expansion benötigt eine bash
+      shell:
+        cmd: echo test.{1,2,3}
+        executable: /bin/bash
+
+
+    - name: Python 3 au feinem Debian-Target-Host installieren
+      raw: apt-get -y install python3
+      when: ansible_os_family == "Debian"
+
+    - name: Safely use templated variables. Always use quote filter to avoid injection issues.
+      raw: "{{ package_mgr|quote }} {{ pkg_flags|quote }} install {{ python_pkgs|join(' ')|quote }}"
+      when: ansible_os_family == "RedHat"
+      register: pmgr_out
+
+    - name: Print output of package manager call
+      debug: msg="{{pmgr_out.stdout_lines}}"
+      when: pmgr_out.stdout_lines is defined
+
+
+    - name: Skript übertragen und ausführen
+      script: ../test.sh
