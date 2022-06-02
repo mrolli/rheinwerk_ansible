@@ -3,7 +3,7 @@
 # - dnf, yum, yum_repository
 # - apt
 # - zypper
-# - package
+# - package, package_facts
 #
 # Weitere beachtenswerte Module in dieser Klasse
 # - apt_repository
@@ -57,3 +57,17 @@
       ansible.builtin.package:
         name: tmux
         state: present
+
+    - name: Auf suse wird python3-rpm benötigt für package_facts
+      zypper:
+        name: python3-rpm
+        state: present
+      when: ansible_os_family == "Suse"
+
+    - name: Fakten über installierte Pakete einsammeln
+      package_facts:
+
+    - debug: msg="Apache ist installiert"
+      when: ansible_facts.packages['apache2'] is defined
+
+    - debug: var=ansible_facts.packages['apache2']
