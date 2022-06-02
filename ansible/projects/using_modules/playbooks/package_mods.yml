@@ -1,0 +1,59 @@
+---
+# Beispiele für die Module:
+# - dnf, yum, yum_repository
+# - apt
+# - zypper
+# - package
+#
+# Weitere beachtenswerte Module in dieser Klasse
+# - apt_repository
+# - pip - Python-Module verwalten
+# - community.general.cpanm - Perl Module verwalten
+# - community.generalpear - PHP PEAR Pakete verwalten
+- hosts: all
+
+  tasks:
+    - name: Das Pendant zu apt-get update
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+
+    - name: Paket "tmux" installieren
+      ansible.builtin.apt:
+        name: tmux
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Paket "tmux" installieren
+      ansible.builtin.yum:
+        name: tmux
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Paket "tree" installieren
+      ansible.builtin.dnf:
+        name: tree
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: EGI-Cas repo installieren
+      ansible.builtin.yum_repository:
+        name: EGI-trustanchors
+        description: EGI trustanchors repository
+        baseurl: http://repository.egi.eu/sw/production/cas/1/current/
+        enabled: true
+        gpgcheck: true
+        gpgkey: http://repository.egi.eu/sw/production/cas/1/current/GPG-KEY-EUGridPMA-RPM-3
+      when: ansible_os_family == "RedHat"
+
+    - name: Paket "tmux" installieren
+      ansible.builtin.zypper:
+        name: tmux
+        state: present
+      when: ansible_os_family == "Suse"
+
+    - name: Paket "tmux" installieren
+      ansible.builtin.package:
+        name: tmux
+        state: present
