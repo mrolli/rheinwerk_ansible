@@ -7,12 +7,12 @@
   tasks:
     # src is searched in dir files/ relative playbook, then relative to playbook
     - name: Beispieldatei "test1.txt" zum Zielhost kopieren
-      copy:
+      ansible.builtin.copy:
         src: test.sh
         dest: /tmp
 
     - name: Dabei auch Zugriffs- unmd Eigentumsrechte verwalten
-      copy:
+      ansible.builtin.copy:
         src: test.sh
         dest: /tmp
         owner: root
@@ -20,13 +20,13 @@
         mode: 0755
 
     - name: Template füllen und hochladen
-      template:
+      ansible.builtin.template:
         src: index.html.j2
         dest: /srv/www/htdocs/index.html
       when: ansible_os_family == "Suse"
 
     - name: Zugriffs- und Eigentumsrechte setzen
-      file:
+      ansible.builtin.file:
         path: /etc/ssl/private
         owner: root
         group: ssl-cert
@@ -34,20 +34,20 @@
       when: ansible_os_family == "Debian"
 
     - name: Einen Symlink erzeugen
-      file:
+      ansible.builtin.file:
         src: /usr/bin/bash
         dest: /root/mybash
         state: link
 
 
     - name:  Dateieigenschaften von /etc/ssl bestimmen
-      stat:
+      ansible.builtin.stat:
         path: /etc/ssl
       register: p
 
-    - debug:
+    - ansible.builtin.debug:
         msg: /etc/ssl is ein existierendes Verzeichnis
       when: p.stat.exists and p.stat.isdir
 
-    - debug: var=p
+    - ansible.builtin.debug: var=p
       run_once: true
