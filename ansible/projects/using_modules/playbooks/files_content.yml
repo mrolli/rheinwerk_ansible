@@ -51,3 +51,28 @@
 
     - ansible.builtin.debug: var=p
       run_once: true
+
+
+    - name: Zeile andern
+      ansible.builtin.lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: 'SELINUX=disabled'
+      when: ansible_os_family != "Debian"
+
+    - name: Konfiguration für virtuelles Interface intragen
+      ansible.builtin.blockinfile:
+        path: /etc/network/interfaces
+        block: |
+          iface ens33:0 inet static
+              address 10.0.0.1/24
+        # optionale Parameter:
+        marker: "# {mark} Virtuelles Iface für XY"
+        state: present
+      when: ansible_distribution == "Debian"
+
+    - name: PasswordAuthenticaton ggf. einkommentieren und auf "no" setzen
+      ansible.builtin.replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?(PasswordAuthentication).*'
+        replace: '\1 no'
