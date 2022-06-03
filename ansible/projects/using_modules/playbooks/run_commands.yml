@@ -48,4 +48,4 @@
 
 
     - name: Skript übertragen und ausführen
-      script: ../test.sh
+      script: test.sh
