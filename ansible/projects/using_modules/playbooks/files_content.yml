@@ -1,0 +1,53 @@
+---
+- hosts: all
+
+  vars:
+    greeting: Hello World!
+
+  tasks:
+    # src is searched in dir files/ relative playbook, then relative to playbook
+    - name: Beispieldatei "test1.txt" zum Zielhost kopieren
+      copy:
+        src: test.sh
+        dest: /tmp
+
+    - name: Dabei auch Zugriffs- unmd Eigentumsrechte verwalten
+      copy:
+        src: test.sh
+        dest: /tmp
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Template füllen und hochladen
+      template:
+        src: index.html.j2
+        dest: /srv/www/htdocs/index.html
+      when: ansible_os_family == "Suse"
+
+    - name: Zugriffs- und Eigentumsrechte setzen
+      file:
+        path: /etc/ssl/private
+        owner: root
+        group: ssl-cert
+        mode: 0710
+      when: ansible_os_family == "Debian"
+
+    - name: Einen Symlink erzeugen
+      file:
+        src: /usr/bin/bash
+        dest: /root/mybash
+        state: link
+
+
+    - name:  Dateieigenschaften von /etc/ssl bestimmen
+      stat:
+        path: /etc/ssl
+      register: p
+
+    - debug:
+        msg: /etc/ssl is ein existierendes Verzeichnis
+      when: p.stat.exists and p.stat.isdir
+
+    - debug: var=p
+      run_once: true
