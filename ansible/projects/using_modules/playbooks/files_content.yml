@@ -1,4 +1,21 @@
 ---
+# Beispiele für die Module:
+# - copy, template, file
+# - stat
+# - lineinfile, blockinfile
+# - replace
+# - unarchive
+#
+# Weitere beachtenswerte Module in dieser Klasse
+# - ansible.posix.al - File-ACL verwalten
+# - fetch - wie copy, nur anders herum
+# - assemble - Dateifragmente zusammensetzen
+# - find - das find-Kommando als Modul
+# - communit.general.ini_fi8le - Inhalte von INI-Dateien verwalten
+# - ansible.posix.synchronize - das rsync-Kommando als Modul
+# - tmepfile - temporäre Dateien und Verzeichnisse erzeugen
+# - community.general.xml - Inhalte von XML-Dateien verwalten
+# - community.general.pamd - PAM-Konfigurationen verwalten
 - hosts: all
 
   vars:
@@ -76,3 +93,12 @@
         path: /etc/ssh/sshd_config
         regexp: '^#?(PasswordAuthentication).*'
         replace: '\1 no'
+
+    - name: Archive-Datei in /srv/www/webapps auspacken
+      ansible.builtin.unarchive:
+        src: 'test.tar.gz'
+        dest: /var/www/html
+        owner: www-data
+        group: www-data
+        creates: '/var/www/html/test'
+      when: ansible_os_family == "Debian"
