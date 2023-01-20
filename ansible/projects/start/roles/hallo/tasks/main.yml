@@ -1,0 +1,4 @@
+---
+- name: "Hallo sagen"
+  debug: msg="Hallo aus einer {{ farbe }} Rolle"
+  when: "farbe is defined"

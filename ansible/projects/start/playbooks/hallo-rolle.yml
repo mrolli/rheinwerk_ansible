@@ -1,0 +1,21 @@
+---
+- hosts: all
+
+  # 4 Wege, die Rolle hallo einzubinden:
+  roles:
+    # - name: hallo
+    #
+    # oder
+    #
+    - role: hallo
+      farbe: "roten"
+    #
+    # oder
+    #
+    - hallo
+
+  tasks:
+    - include_role:
+        name: hallo
+      vars:
+        farbe: "blauen"
