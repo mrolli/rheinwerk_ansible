@@ -1,0 +1,8 @@
+---
+- ansible.builtin.debug:
+    msg: Ein erster Task
+  tags: task1
+
+- debug:
+    msg: Ein zweiter Task
+  tags: task2
