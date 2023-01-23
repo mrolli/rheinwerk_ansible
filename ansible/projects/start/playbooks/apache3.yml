@@ -32,7 +32,7 @@
 
     - name: Minimale Startseite einrichten
       ansible.builtin.template:
-        src: index.html.j2
+        src: apache_index.html.j2
         dest: "{{ apache_document_root }}/index.html"
         mode: 0644
 
