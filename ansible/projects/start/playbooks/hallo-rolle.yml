@@ -1,6 +1,15 @@
 ---
 - hosts: all
 
+  pre_tasks:
+    - name: Update apt cache if needed
+      ansible.builtin.apt: update_cache=true cache_valid_time=3600
+      when: ansible_os_family == "Debian"
+
+    - name: Update dnf cache if needed
+      ansible.builtin.dnf: update_cache=true
+      when: ansible_os_family == "RedHat"
+
   # 4 Wege, die Rolle hallo einzubinden:
   roles:
     # - name: hallo
