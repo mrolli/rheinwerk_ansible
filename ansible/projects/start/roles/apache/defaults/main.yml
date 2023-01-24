@@ -1,2 +1,10 @@
 ---
+# Default-Hintergrundfarbe für die Startseite:
 apache_farbe: LightBlue
+
+# Redirect für die Google-Weiterleitung
+apahe_google_redirect: /go
+
+# User/Password für den Zugriff auf geschützte Bereiche:
+apache_admin_user: chef
+apache_admin_pass: # no default value

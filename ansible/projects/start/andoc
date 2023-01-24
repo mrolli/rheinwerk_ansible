@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+role=$1
+roles_paths=(~/ansible/roles ./roles)
+
+if [ -z "$role" ]; then
+  echo "What role documentation do you want"
+  exit 1
+fi
+
+for p in "${roles_paths[@]}"; do
+  readme="$p/$role/README.md"
+  test -e "$readme" && break
+done
+
+if [ ! -e "$readme" ]; then
+  echo "$role: No such role"
+  exit 1
+fi
+
+pandoc -s "$readme" -t man -V title="Ansible Role" -V section=7 | man -l -

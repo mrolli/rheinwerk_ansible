@@ -1,38 +1,41 @@
-Role Name
-=========
+# Ansible-Rolle: apache
 
-A brief description of the role goes here.
+Eine einfache Apache-Installation auf verschiedenen Linux-Systemen
 
-Requirements
-------------
+## Voraussetzungen
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Die Firewall muss deaktiviert sein, oder Port 80 muss anderweitig geöffnet
+werden.
 
-Role Variables
---------------
+## Geeignet für
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Debian 11, Rocky 8, openSUSE 15, Ubuntu 20.04
 
-Dependencies
-------------
+## Parameter mit Default-Wertn
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+  apache_farbe: LightBlue
+  apache_google_redirect: /go
+  apache_admin_user: chef
+  apache_admin_pass: # no default
 
-Example Playbook
-----------------
+## Beschreibung
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Diese Rolle wurde rein zu Demonstrationszwecken erstellt. Sie installiert auf
+verschiedenen Linux-Systemen einen Apache-Webserver, startet ihn und richtet
+eine einfache Startseite ein . Eine Weiterleitungsregel nach Google wird
+ebenfalls konfiguriert.
+Mit dem Parameter `apache_farbe` kann die Hintergrundfarbe der Startseite
+bestimmt werden. Alle anderen Parameter sind nur zur internen Verwendung.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Beispiel-Playbook
 
-License
--------
+```
+- hosts: all
 
-BSD
+  roles:
+    -name: apache
+```
 
-Author Information
-------------------
+## Autor
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Willi Winzig <winzig@example.org>

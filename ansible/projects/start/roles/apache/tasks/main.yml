@@ -1,4 +1,9 @@
 ---
+- assert:
+    that:
+      - apache_admin_pass != None
+    fail_msg: Setzen Sie bitte ein Passwort mit apache_admin_pass
+
 - name: Systemspezifische Parameter laden
   include_vars: >
    {{ ansible_distribution | lower | replace(" ", "-") }}.yml
